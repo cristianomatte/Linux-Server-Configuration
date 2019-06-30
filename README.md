@@ -13,6 +13,7 @@ You will take a baseline installation of a Linux server and prepare it to host y
 ```bash
 sudo apt-get update
 sudo apt-get upgrade
+sudo apt-get dist-upgrade
 ```
 
 #### Change the SSH port from 22 to 2200. Make sure to configure the Lightsail firewall to allow it.
@@ -36,7 +37,7 @@ sudo ufw enable
 sudo adduser grader --disabled-password
 ```
 #### Give grader the permission to sudo.
-- Create the file `/etc/sudoers.d/grader` with the following content
+- Create the file `/etc/sudoers.d/grader` with the following content:
 ```bash
 # User rules for grader
 grader ALL=(ALL) NOPASSWD:ALL
@@ -54,6 +55,18 @@ touch /home/grader/authorized_keys
 ```bash
 chmod 700 /home/grader/.ssh
 chmod 644 /home/grader/authorized_keys
+```
+
+### Prepare to deploy your project.
+#### Configure the local timezone to UTC.
+
+#### Install and configure Apache to serve a Python mod_wsgi application.
+
+#### Install and configure PostgreSQL
+
+#### Install git.
+``` bash
+sudo apt-get install git
 ```
 
 ## References
