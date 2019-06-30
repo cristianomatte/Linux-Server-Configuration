@@ -20,6 +20,16 @@ sudo apt-get upgrade
 - Restart the `sshd` service with `sudo service sshd restart`.
 - On Lightsail Networking configurations, add port `2200` and remove port `22` from Firewall settings.
 
+#### Configure the Uncomplicated Firewall (UFW) to only allow incoming connections for SSH (port 2200), HTTP (port 80), and NTP (port 123).
+```bash
+sudo ufw default deny incoming
+sudo ufw default allow outgoing
+sudo ufw allow 2200/tcp
+sudo ufw allow www
+sudo ufw allow ntp
+sudo ufw enable
+```
+
 
 ## References
 
