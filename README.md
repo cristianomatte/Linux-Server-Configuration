@@ -72,10 +72,26 @@ sudo apt-get install libapache2-mod-wsgi-py3
 ```
 
 #### Install and configure PostgreSQL
+```bash
+sudo apt-get install postgresql libpq-dev
+```
 
 ##### Do not allow remote connections
+Check the file `/etc/postgresql/9.5/main/pg_hba.conf`. It must have the following:
+```
+local   all     postgres    peer
+local   all     all         peer
+host    all     all         127.0.0.1/32    md5
+host    all     all         ::1/128         md5
+```
 
 ##### Create a new database user named catalog that has limited permissions to your catalog application database.
+```
+sudo su - postgres
+psql
+postgres=# CREATE USER catalog WITH PASSWORD 'catalog' CREATEDB;
+postgres=# CREATE DATABASE catalog WITH OWNER catalog;
+```
 
 #### Install git.
 ``` bash
@@ -86,3 +102,4 @@ sudo apt-get install git
 
 - [Changing the SSH Port for Your Linux Server](https://www.godaddy.com/help/changing-the-ssh-port-for-your-linux-server-7306)
 - [ubuntu - Creating a user without a password](https://unix.stackexchange.com/questions/56765/creating-an-user-without-a-password)
+- [How To Secure PostgreSQL on an Ubuntu VPS](https://www.digitalocean.com/community/tutorials/how-to-secure-postgresql-on-an-ubuntu-vps)
