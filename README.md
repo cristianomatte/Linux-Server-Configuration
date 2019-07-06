@@ -77,7 +77,7 @@ sudo apt-get install postgresql libpq-dev
 ```
 
 ##### Do not allow remote connections
-Check the file `/etc/postgresql/9.5/main/pg_hba.conf`. It must have the following:
+- Check the file `/etc/postgresql/9.5/main/pg_hba.conf`. It must have the following:
 ```
 local   all     postgres    peer
 local   all     all         peer
@@ -97,6 +97,24 @@ postgres=# CREATE DATABASE catalog WITH OWNER catalog;
 ``` bash
 sudo apt-get install git
 ```
+
+### Deploy the Item Catalog project.
+#### Clone and setup your Item Catalog project from the Github repository you created earlier in this Nanodegree program.
+- Clone the repository and change its directory tree ownership to `grader`.
+```bash
+sudo mkdir /var/www/catalog
+sudo git clone https://github.com/cristianomatte/Item-Catalog.git /var/www/catalog/
+sudo chown -R grader:grader /var/www/catalog/
+```
+- Install `pip` and the required Python dependencies.
+```bash
+sudo apt-get install python3-pip
+sudo pip3 install -r /var/www/catalog/requirements.txt
+sudo pip3 install psycopg2
+```
+
+#### Set it up in your server so that it functions correctly when visiting your server’s IP address in a browser. Make sure that your .git directory is not publicly accessible via a browser!
+
 
 ## References
 
