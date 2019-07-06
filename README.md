@@ -114,6 +114,52 @@ sudo pip3 install psycopg2
 ```
 
 #### Set it up in your server so that it functions correctly when visiting your server’s IP address in a browser. Make sure that your .git directory is not publicly accessible via a browser!
+- In file `item_catalog.py` (`/var/www/catalog/`), remove the `app.secret_key` configuration (lines `16-20`).
+- Change the line `app.run(host="0.0.0.0", port=8000, debug=True)` in file `item_catalog.py` to `app.run()`.
+- Create the `application.wsgi` file at `/var/www/catalog/` with the folowing content:
+```python
+import sys
+import json
+
+sys.path.insert(0, '/var/www/catalog')
+
+from item_catalog import app as application
+with open('/var/www/catalog/client_secrets.json', 'r') as file:
+    # Read secret key from configuration file
+    data = file.read()
+    dictionary = json.loads(data)
+    application.secret_key = dictionary['app']['secret_key']
+```
+- To use the PostgreSQL database, change the line `engine = create_engine("sqlite:///item-catalog.db")` in file `sqlite.py` (`/var/www/catalog/repository/`) to `engine = create_engine('postgresql://catalog:catalog@localhost/catalog')`.
+- Generate the initial database data by running the script `lots_of_items.py` (`/var/www/catalog/`).
+- To enable Google Sign In, add the following to the OAuth client credentials at the [developers console](https://console.developers.google.com):
+    - Add `xip.io` to the authorized domains.
+    - Add `http://54.91.188.111.xip.io` to the allowed JavaScript origins.
+- Create the Virtual Host configuration file (`/etc/apache2/sites-available/catalog.conf`) with the following content:
+```xml
+<VirtualHost *:80>
+    ServerName 54.91.188.111
+    ServerAlias 54.91.188.111.xip.io
+    ServerAdmin grader@54.91.188.111
+    WSGIScriptAlias / /var/www/catalog/application.wsgi
+    <Directory /var/www/catalog/>
+        Order allow,deny
+        Allow from all
+    </Directory>
+    Alias /static /var/www/catalog/static
+    <Directory /var/www/www/static/>
+        Order allow,deny
+        Allow from all
+    </Directory>
+    ErrorLog ${APACHE_LOG_DIR}/error.log
+    LogLevel warn
+    CustomLog ${APACHE_LOG_DIR}/access.log combined
+</VirtualHost>
+```
+-  Enable the Virtual Host file created for the application.
+```
+sudo a2ensite catalog.conf
+```
 
 
 ## References
@@ -121,3 +167,5 @@ sudo pip3 install psycopg2
 - [Changing the SSH Port for Your Linux Server](https://www.godaddy.com/help/changing-the-ssh-port-for-your-linux-server-7306)
 - [ubuntu - Creating a user without a password](https://unix.stackexchange.com/questions/56765/creating-an-user-without-a-password)
 - [How To Secure PostgreSQL on an Ubuntu VPS](https://www.digitalocean.com/community/tutorials/how-to-secure-postgresql-on-an-ubuntu-vps)
+- [mod_wsgi (Apache)](http://flask.pocoo.org/docs/1.0/deploying/mod_wsgi/)
+- [How To Set Up Apache Virtual Hosts on Ubuntu 16.04](https://www.digitalocean.com/community/tutorials/how-to-set-up-apache-virtual-hosts-on-ubuntu-16-04)
