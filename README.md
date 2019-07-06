@@ -59,10 +59,19 @@ chmod 644 /home/grader/authorized_keys
 
 ### Prepare to deploy your project.
 #### Configure the local timezone to UTC.
+```bash
+sudo dpkg-reconfigure tzdata
+```
+- Select: `None of the above` 
+- Select: `UTC`
 
 #### Install and configure Apache to serve a Python mod_wsgi application.
 
 #### Install and configure PostgreSQL
+
+##### Do not allow remote connections
+
+##### Create a new database user named catalog that has limited permissions to your catalog application database.
 
 #### Install git.
 ``` bash
