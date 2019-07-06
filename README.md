@@ -66,6 +66,10 @@ sudo dpkg-reconfigure tzdata
 - Select: `UTC`
 
 #### Install and configure Apache to serve a Python mod_wsgi application.
+```bash
+sudo apt-get install apache2
+sudo apt-get install libapache2-mod-wsgi-py3
+```
 
 #### Install and configure PostgreSQL
 
