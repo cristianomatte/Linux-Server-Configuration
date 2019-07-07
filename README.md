@@ -24,9 +24,10 @@ sudo apt-get dist-upgrade
 ```
 
 #### Change the SSH port from 22 to 2200. Make sure to configure the Lightsail firewall to allow it.
-- Edit the file `/etc/ssh/sshd_config`, changing the line with `# Port 22` to `Port 2200`.
+- Edit the file `/etc/ssh/sshd_config`, changing the line with `# Port 22` to `Port 2200`. Change the line with `PermitRootLogin prohibit-password` to `PermitRootLogin no` to disable remote `root` login.
 - Restart the `sshd` service with `sudo service sshd restart`.
 - On Lightsail Networking configurations, add port `2200` and remove port `22` from Firewall settings.
+- Disable `root` login by editing the file `/etc/ssh/sshd_config` and changing the line `a` to `PermitRootLogin no`.
 
 #### Configure the Uncomplicated Firewall (UFW) to only allow incoming connections for SSH (port 2200), HTTP (port 80), and NTP (port 123).
 ```bash
